@@ -3,7 +3,6 @@ langchain-groq
 faiss-cpu
 tiktoken
 langchain-community
-langchain-openai
 chromadb
 sentence-transformers
 python-dotenv
@@ -20,3 +19,10 @@ pymupdf
 docx2txt
 unstructured
 openpyxl
+jq
+matplotlib
+##Embeddings
+langchain-openai
+langchain-huggingface
+sentence-transformers
+tiktoken
