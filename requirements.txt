@@ -15,3 +15,7 @@ matplotlib
 seaborn
 langchain-core
 langchain-text-splitters
+python-docx
+pymupdf
+docx2txt
+unstructured
