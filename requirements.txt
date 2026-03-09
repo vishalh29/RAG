@@ -26,3 +26,4 @@ langchain-openai
 langchain-huggingface
 sentence-transformers
 tiktoken
+langchain-experimental
