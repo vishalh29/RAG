@@ -27,3 +27,4 @@ langchain-huggingface
 sentence-transformers
 tiktoken
 langchain-experimental
+wikipedia
