@@ -22,6 +22,8 @@ unstructured
 openpyxl
 jq
 matplotlib
+arxiv
+wikipedia
 ##Embeddings
 langchain-openai
 langchain-huggingface
@@ -29,3 +31,4 @@ sentence-transformers
 tiktoken
 langchain-experimental
 wikipedia
+langchain-tavily
