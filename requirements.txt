@@ -9,6 +9,7 @@ python-dotenv
 pypdf
 ipykernel
 pandas
+langgraph
 numpy
 matplotlib
 seaborn
