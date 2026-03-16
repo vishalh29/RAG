@@ -32,3 +32,4 @@ tiktoken
 langchain-experimental
 wikipedia
 langchain-tavily
+langgraph-cli[inmem]
