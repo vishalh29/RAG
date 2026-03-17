@@ -1,0 +1,44 @@
+Internal Technical Documentation - Architecture & Methods
+
+1. RAG Pipeline Architecture (v2.3)
+- Ingestion: WebBaseLoader → RecursiveCharacterTextSplitter (chunk_size=500, overlap=50)
+- Embedding: OpenAI text-embedding-ada-002 via LangChain OpenAIEmbeddings
+- Vector Store: FAISS (IVFFlat index, nprobe=10 at query time)
+- Retriever: top-k=4, similarity search with score threshold 0.75
+- Generator: GPT-4o with system prompt enforcing grounded answers
+- Fallback: If retriever returns no docs above threshold, route to web search tool
+
+2. Multi-Agent Orchestration (LangGraph)
+- Framework: LangGraph StateGraph with typed state dictionaries
+- Agent pattern: ReAct (Reasoning + Acting) via create_react_agent
+- Tool routing: LLM decides tool invocation based on tool descriptions
+- State management: Annotated message lists with add_messages reducer
+- Supported tools: RAG retriever, Wikipedia, ArXiv, SQL, internal knowledge base
+- Error handling: Retry with exponential backoff on tool failures (max 3 attempts)
+
+3. Embedding Strategy
+- Primary model: text-embedding-ada-002 (1536 dimensions)
+- Chunking strategy: Recursive character splitting preserves paragraph boundaries
+- Metadata: Source URL, document title, and chunk index stored per vector
+- Deduplication: Cosine similarity > 0.98 between chunks triggers merge
+- Re-indexing: Scheduled nightly for dynamic document sources
+
+4. Deployment Architecture
+- API layer: FastAPI with async endpoints for streaming responses
+- Compute: AWS Lambda for lightweight queries, ECS Fargate for heavy RAG workloads
+- Caching: Redis for frequent query-result pairs (TTL: 1 hour)
+- Monitoring: LangSmith tracing enabled for all production runs
+- Latency targets: p50 < 500ms, p99 < 2s for single-turn RAG queries
+
+5. Security & Access Control
+- API keys rotated monthly via AWS Secrets Manager
+- PII detection: presidio-based scanner on all retrieved documents before LLM input
+- Rate limiting: 100 requests/min per user, 1000 requests/min per organization
+- Audit logging: All tool invocations and LLM calls logged to CloudWatch
+
+6. Evaluation Framework
+- Metrics: Answer relevance, faithfulness, context precision (via RAGAS)
+- Human evaluation: 3-annotator majority vote on 200-sample test set
+- Synthetic evaluation: GPT-4 as judge with rubric-based scoring
+- Regression testing: Golden dataset of 50 query-answer pairs run on every deploy
+- A/B testing: Shadow mode deployment for new retriever configurations

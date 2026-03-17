@@ -33,3 +33,4 @@ langchain-experimental
 wikipedia
 langchain-tavily
 langgraph-cli[inmem]
+langgraph_supervisor
